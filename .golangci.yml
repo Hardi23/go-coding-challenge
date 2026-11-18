@@ -1,0 +1,56 @@
+# golangci-lint Konfiguration.
+
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - errcheck      # unbehandelte Rueckgabefehler
+    - errorlint     # falsche Fehlervergleiche (== statt errors.Is), fehlendes %w
+    - nilerr        # return nil obwohl err != nil
+
+    - gosec         # typische Sicherheitsbefunde
+    - bodyclose     # nicht geschlossene HTTP-Response-Bodies
+
+    - govet
+    - staticcheck
+    - ineffassign
+    - unused
+    - copyloopvar
+    - durationcheck
+    - makezero
+    - noctx         # HTTP-Requests ohne context.Context
+
+    - misspell
+    - revive
+    - unconvert
+    - whitespace
+
+  settings:
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+
+    gosec:
+      excludes:
+        - G104
+
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - errcheck
+          - gosec
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

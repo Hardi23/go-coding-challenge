@@ -1,0 +1,13 @@
+### Example
+GET http://localhost:8081/code-challenge/health
+
+###
+GET http://localhost:8081/code-challenge/greeting?name=World
+
+###
+POST http://localhost:8081/code-challenge/greeting
+Content-Type: application/json
+
+{
+  "name": "World"
+}
