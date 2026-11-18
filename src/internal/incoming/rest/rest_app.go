@@ -13,9 +13,10 @@ import (
 type RestApp struct {
 	config          *config.Config
 	greetingService service.GreetingService
+	schadenService  service.SchadenService
 }
 
-func NewRestApp(cfg *config.Config, greetingService service.GreetingService) (*RestApp, error) {
+func NewRestApp(cfg *config.Config, greetingService service.GreetingService, schadenService service.SchadenService) (*RestApp, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("config must not be nil")
 	}
@@ -26,22 +27,21 @@ func NewRestApp(cfg *config.Config, greetingService service.GreetingService) (*R
 	return &RestApp{
 		config:          cfg,
 		greetingService: greetingService,
+		schadenService:  schadenService,
 	}, nil
 }
 
-func writeJSON(w http.ResponseWriter, r *http.Request, status int, payload any) error {
+func writeJSON(w http.ResponseWriter, r *http.Request, status int, payload any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(status)
 
 	if payload == nil {
-		return nil
+		return
 	}
 
 	if err := json.NewEncoder(w).Encode(payload); err != nil {
 		slog.ErrorContext(r.Context(), "encoding json response", "err", err, "status", status)
 	}
-
-	return nil
 }
 
 const maxRequestBodyBytes = 1 << 20
