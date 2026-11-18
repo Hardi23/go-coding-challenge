@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log/slog"
@@ -31,17 +32,18 @@ func NewRestApp(cfg *config.Config, greetingService service.GreetingService, sch
 	}, nil
 }
 
-func writeJSON(w http.ResponseWriter, r *http.Request, status int, payload any) {
+func writeJSON(ctx context.Context, w http.ResponseWriter, status int, payload any) error {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(status)
-
 	if payload == nil {
-		return
+		w.WriteHeader(status)
+		return nil
 	}
 
 	if err := json.NewEncoder(w).Encode(payload); err != nil {
-		slog.ErrorContext(r.Context(), "encoding json response", "err", err, "status", status)
+		slog.ErrorContext(ctx, "encoding json response", "err", err, "status", status)
+		return fmt.Errorf("writing response: %w", err)
 	}
+	return nil
 }
 
 const maxRequestBodyBytes = 1 << 20
