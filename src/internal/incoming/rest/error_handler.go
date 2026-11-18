@@ -35,7 +35,7 @@ func errorHandler(next HandlerFunc) http.HandlerFunc {
 		} else {
 			slog.WarnContext(r.Context(), "request rejected", logAttrs...)
 		}
-		err = writeJSON(w, r, status, ErrorResponse{Message: clientMessage})
+		err = writeJSON(r.Context(), w, status, ErrorResponse{Message: clientMessage})
 		if err != nil {
 			slog.ErrorContext(r.Context(), "error writing response", "err", err)
 		}

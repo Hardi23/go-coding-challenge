@@ -21,7 +21,7 @@ func (app *RestApp) HandleGetGreeting(w http.ResponseWriter, r *http.Request) er
 		return fmt.Errorf("get greeting: %w", err)
 	}
 
-	return writeJSON(w, r, http.StatusOK, response)
+	return writeJSON(r.Context(), w, http.StatusOK, response)
 }
 
 func (app *RestApp) HandlePostGreeting(w http.ResponseWriter, r *http.Request) error {
@@ -42,5 +42,5 @@ func (app *RestApp) HandlePostGreeting(w http.ResponseWriter, r *http.Request) e
 		return fmt.Errorf("post greeting: %w", err)
 	}
 
-	return writeJSON(w, r, http.StatusOK, response)
+	return writeJSON(r.Context(), w, http.StatusOK, response)
 }

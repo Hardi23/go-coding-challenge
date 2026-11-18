@@ -8,7 +8,7 @@ type HealthResponse struct {
 }
 
 func (app *RestApp) HandleGetHealth(w http.ResponseWriter, r *http.Request) error {
-	return writeJSON(w, r, http.StatusOK, HealthResponse{
+	return writeJSON(r.Context(), w, http.StatusOK, HealthResponse{
 		Status: "UP",
 		Stage:  app.config.Stage,
 	})
