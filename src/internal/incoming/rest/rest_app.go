@@ -14,10 +14,9 @@ import (
 type RestApp struct {
 	config          *config.Config
 	greetingService service.GreetingService
-	schadenService  service.SchadenService
 }
 
-func NewRestApp(cfg *config.Config, greetingService service.GreetingService, schadenService service.SchadenService) (*RestApp, error) {
+func NewRestApp(cfg *config.Config, greetingService service.GreetingService) (*RestApp, error) {
 	if cfg == nil {
 		return nil, fmt.Errorf("config must not be nil")
 	}
@@ -28,7 +27,6 @@ func NewRestApp(cfg *config.Config, greetingService service.GreetingService, sch
 	return &RestApp{
 		config:          cfg,
 		greetingService: greetingService,
-		schadenService:  schadenService,
 	}, nil
 }
 
